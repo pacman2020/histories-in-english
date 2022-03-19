@@ -4,15 +4,20 @@ const brcrypt = require('bcryptjs');
 module.exports = {
   async up (queryInterface, Sequelize) {
 
-    const newpassword = brcrypt.hashSync('admin', 10);
+    try {
+      const newpassword = brcrypt.hashSync('admin', 10);
 
-    await queryInterface.bulkInsert('users', [{
-      userName: 'jonh',
-      email: "jonh@gmail.com",
-      password: newpassword,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }]);
+      await queryInterface.bulkInsert('users', [{
+        userName: 'jonh',
+        email: "jonh@gmail.com",
+        password: newpassword,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }]);
+
+    } catch (error) {
+      console.log(error);
+    }
   
   },
 
