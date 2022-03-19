@@ -8,8 +8,8 @@ module.exports = {
       const newpassword = brcrypt.hashSync('admin', 10);
 
       await queryInterface.bulkInsert('users', [{
-        userName: 'jonh',
-        email: "jonh@gmail.com",
+        userName: 'admin',
+        email: "admin@gmail.com",
         password: newpassword,
         createdAt: new Date(),
         updatedAt: new Date()
