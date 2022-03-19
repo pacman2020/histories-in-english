@@ -1,5 +1,6 @@
 'use strict';
 
+const brcrypt = require('bcryptjs');
 const model = require("../db/models");
 
 module.exports = {
@@ -29,16 +30,14 @@ module.exports = {
                 return res.status(200).json({ msg: 'usuario ja registrado no sistema.'});
             }
 
-            //criptografa senhas
+            //criptografia de senhas
+            let NewPassword = brcrypt.hashSync(password, 10);
             
-            let user = await model.User.create({ userName, email, password });
-            delete user.dataValues.password, user.dataValues.email;
-            console.log('---', user);
-
-            return res.status(201).json({ user: 'user.dataValues.id'});
+            let user = await model.User.create({ userName, email, password: NewPassword });
+    
+            return res.status(201).json({ user: user.dataValues.id });
     
         } catch (error) {
-            console.log('--->', error);
             return res.status(500).json({ msg: error});
         }
 
