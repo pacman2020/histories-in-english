@@ -7,7 +7,6 @@ module.exports = {
     async getByUserId (req, res){
         try {
             let user = await model.User.findByPk(req.params.id);
-            // console.log('---', user);
 
             if (!user){
                 return res.status(200).json({ msg: 'usuario nao encontrador!'});
@@ -30,7 +29,7 @@ module.exports = {
                 return res.status(200).json({ msg: 'usuario ja registrado no sistema.'});
             }
 
-            //criptografia de senhas
+            //password encryption
             let NewPassword = brcrypt.hashSync(password, 10);
             
             let user = await model.User.create({ userName, email, password: NewPassword });
@@ -43,6 +42,19 @@ module.exports = {
 
     },
     async destroyUser (req, res){
+        try {
+            let findUser = await model.User.findByPk(req.params.id);
 
+            if (!findUser){
+                return res.status(200).json({ msg: 'usuario nao encontrador!'});
+            }
+            
+            await model.User.destroy({ where: { id: findUser.dataValues.id } });
+
+            return res.status(200).json({ msg: 'usuario deletado'});
+
+        } catch (error) {
+            return res.status(500).json({ msg: error});
+        }
     }
 }
