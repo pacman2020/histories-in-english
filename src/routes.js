@@ -2,7 +2,7 @@
 
 
 const express = require('express');
-const { allStories } = require('./controllers/story');
+const { allStories, getByStoryId } = require('./controllers/story');
 const { getByUserId, createUser, destroyUser } = require('./controllers/user');
 const router = express.Router();
 
@@ -13,5 +13,6 @@ router.post('/user', createUser );
 
 //stories
 router.get('/stories', allStories );
+router.get('/stories/:id', getByStoryId );
 
 module.exports = router;
