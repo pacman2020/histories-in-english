@@ -1,6 +1,5 @@
 'use strict';
 
-
 const models = require('../db/models');
 const brcrypt = require('bcryptjs');
 
@@ -36,16 +35,16 @@ module.exports = {
     async getByStoryId(req, res){
         try {
 
-            const stories = await models.Stories.findByPk(req.params.id);
+            const story = await models.Stories.findByPk(req.params.id);
 
-            if(!stories){
+            if(!story){
                 res.status(200).json({
                     mmsg: 'story not found.'
                 });
             }
 
             res.status(200).json({
-                 stories : stories
+                story : story
                 });
 
         } catch (error) {
@@ -53,6 +52,7 @@ module.exports = {
             res.status(500).json({ msg: error });
         }
     },
+
     async createStory(req, res){
         try {
             const userId = 1;
@@ -67,7 +67,6 @@ module.exports = {
             const newStory = await models.Stories.create({
                 title, story, active, userId
             });
-            // console.log('--', newStory);
 
             res.status(201).json({
                  stories : 'created story'
@@ -82,28 +81,47 @@ module.exports = {
     async updateStory(req, res){
         try {
             const userId = 2;
+            const id = req.params.id;
             const { title, story, active } = await req.body;
             
-            //verificando se story existe e se usuario logado e o criador
-            let foundStory = await models.Stories.findOne({ where:{id: 5, userId: userId} });
+            //checking whether story exists and if logged-in user and creator
+            let foundStory = await models.Stories.findOne({ where:{id: id, userId: userId} });
 
             if(!foundStory){
-                res.status(404).json({ msg: 'voce não tem permisão para editar essa historia'});
+                res.status(404).json({ msg: "you're not allowed to edit this story"});
             }
 
-            const updateStory = await models.Stories.update({
-                title, story, active, userId
-            },{
+            await models.Stories.update({ title, story, active, userId},{
                 where: {
-                    id: 5
+                    id: id
              }});
-
-
-            // console.log('--', updateStory);
 
             res.status(200).json({
                  stories : 'updated story'
                 });
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ msg: error });
+        }
+    },
+
+    async destroyStory(req, res){
+        try {
+            const userId = 2;
+            const id = req.params.id;
+
+            let foundStory = await models.Stories.findOne({ where:{id: id, userId: userId} });
+
+            if(!foundStory){
+                res.status(404).json({ msg: "you're not allowed to edit this story"});
+            }
+
+            await models.Stories.destroy({where: { id: id }});;
+
+            res.status(200).json({
+                msg : 'deteled story'
+            });
 
         } catch (error) {
             console.log(error);
