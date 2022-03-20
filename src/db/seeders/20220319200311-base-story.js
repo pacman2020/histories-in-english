@@ -24,9 +24,9 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     try {
       await queryInterface.bulkInsert('stories', [{
-        title: 'John Doe',
-        story: 'storyfull',
-        userId: 1,
+        title: 'teste 4',
+        story: storyfull,
+        userId: 2,
         active: false,
         createdAt: new Date(),
         updatedAt: new Date()

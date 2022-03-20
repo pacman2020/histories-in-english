@@ -1,5 +1,6 @@
 'use strict';
 
+
 const brcrypt = require('bcryptjs');
 const model = require("../db/models");
 
