@@ -2,7 +2,7 @@
 
 
 const express = require('express');
-const { allStories, getByStoryId } = require('./controllers/story');
+const { allStories, getByStoryId, createStory } = require('./controllers/story');
 const { getByUserId, createUser, destroyUser } = require('./controllers/user');
 const router = express.Router();
 
@@ -12,7 +12,8 @@ router.delete('/user/:id', destroyUser );
 router.post('/user', createUser );
 
 //stories
-router.get('/stories', allStories );
-router.get('/stories/:id', getByStoryId );
+router.get('/story', allStories );
+router.get('/story/:id', getByStoryId );
+router.post('/story', createStory );
 
 module.exports = router;

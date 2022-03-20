@@ -52,6 +52,32 @@ module.exports = {
             console.log(error);
             res.status(500).json({ msg: error });
         }
+    },
+    async createStory(req, res){
+        try {
+            const userId = 1;
+            const { title, story, active } = await req.body;
+            
+            let user = await models.User.findByPk(userId);
+
+            if(!user){
+                res.status(200).json({ msg: 'user not found'});
+            }
+            
+            const newStory = await models.Stories.create({
+                title, story, active, userId
+            });
+
+            console.log('--', newStory);
+
+            res.status(201).json({
+                 stories : 'created story'
+                });
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ msg: error });
+        }
     }
 
 
