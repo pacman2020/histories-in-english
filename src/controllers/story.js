@@ -67,11 +67,42 @@ module.exports = {
             const newStory = await models.Stories.create({
                 title, story, active, userId
             });
-
-            console.log('--', newStory);
+            // console.log('--', newStory);
 
             res.status(201).json({
                  stories : 'created story'
+                });
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ msg: error });
+        }
+    },
+
+    async updateStory(req, res){
+        try {
+            const userId = 2;
+            const { title, story, active } = await req.body;
+            
+            //verificando se story existe e se usuario logado e o criador
+            let foundStory = await models.Stories.findOne({ where:{id: 5, userId: userId} });
+
+            if(!foundStory){
+                res.status(404).json({ msg: 'voce não tem permisão para editar essa historia'});
+            }
+
+            const updateStory = await models.Stories.update({
+                title, story, active, userId
+            },{
+                where: {
+                    id: 5
+             }});
+
+
+            // console.log('--', updateStory);
+
+            res.status(200).json({
+                 stories : 'updated story'
                 });
 
         } catch (error) {
