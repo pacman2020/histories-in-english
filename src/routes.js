@@ -1,9 +1,13 @@
 'use strict';
 
 const express = require('express');
+const { login } = require('./controllers/login');
 const { allStories, getByStoryId, createStory, updateStory, destroyStory } = require('./controllers/story');
 const { getByUserId, createUser, destroyUser } = require('./controllers/user');
 const router = express.Router();
+
+//login
+router.post('/login', login );
 
 //users
 router.get('/user/:id', getByUserId );
