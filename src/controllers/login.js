@@ -3,6 +3,7 @@
 const brcrypt = require('bcryptjs');
 const model = require("../db/models");
 const jwt = require('jsonwebtoken');
+const { SECRET_KEY } = require('../config/env');
 
 module.exports = {
     async login (req, res){
@@ -16,12 +17,15 @@ module.exports = {
             }
             
             const user = await brcrypt.compareSync(password, finduser.dataValues.password);
-        
+            // console.log('---',user)
             //rega token
+            const token = jwt.sign({
+                id: finduser.dataValues.id
+            }, SECRET_KEY ,{expiresIn: "5h"})
 
             return res.status(200).json({
-                 user: user,
-                 token: 'token'
+                 user: finduser.dataValues.userName,
+                 token: token
                 });
 
         } catch (error) {
